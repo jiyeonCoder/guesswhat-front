@@ -8,7 +8,6 @@ async function loadQuizzes() {
     const quizList = document.getElementById("quiz-list");
 
     quizzes.forEach((quiz) => {
-        console.log(quiz.id);
         const newCol = document.createElement("div");
         newCol.setAttribute("class", "col");
         newCol.classList.add("text-center");
@@ -27,7 +26,7 @@ async function loadQuizzes() {
 
         const newCardtitle = document.createElement("p");
         newCardtitle.setAttribute("class", "card-title");
-        newCardtitle.innerText = quiz.author.nickname;
+        newCardtitle.textContent = `작성자: ${quiz.author.nickname}`;
         newCardHeader.appendChild(newCardtitle);
 
         const articleImage = document.createElement("img");

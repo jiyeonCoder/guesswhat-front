@@ -67,7 +67,7 @@ async function likesQuiz(quizId) {
         return;
     }
     const data = await response.json();
-    likesCnt.innerText = data.likes_count;
+    likesCnt.textContent = data.likes_count;
     likesBtn.classList.remove("btn-outline-primary");
     likesBtn.classList.add("btn-primary");
     likesBtn.disabled = true;
@@ -99,22 +99,24 @@ async function loadCommentList(quizId) {
     if (data.answer) {
         const answer = data.answer;
         commentList.innerHTML += `
-        <li class="media d-flex mb-3 text-bg-success">
+        <li class="media d-flex mb-3 rounded-3 border border-success border-2 p-2">
             <div class="media-body">
-                <h5 class="mt-0 mb-1"><a href="/mypage.html?user_id=${answer.author.id}">${answer.author.nickname}</a></h5>
-                ${answer.content}
-                <h5 class="mt-0 mb-1">${answer.created_at}</h5>
+                <h6 class="mt-0 mb-2"><a href="/mypage.html?user_id=${answer.author.id}">${answer.author.nickname}</a></h6>
+                <strong>${answer.content}</strong>
+                <span class="badge rounded-pill text-bg-success">정답!</span>
+                
+                <small class="text-muted">${answer.created_at}</small>
             </div>
         </li>`;
     }
     const comments = data.comments;
     comments.forEach((comment) => {
         commentList.innerHTML += `
-        <li class="media d-flex mb-3">
+        <li class="media d-flex mb-3 rounded-3 border border-secondary border-2 p-2">
         <div class="media-body">
-            <h5 class="mt-0 mb-1"><a href="/mypage.html?user_id=${comment.author.id}">${comment.author.nickname}</a></h5>
-            ${comment.content}
-            <h5 class="mt-0 mb-1">${comment.created_at}</h5>
+            <h6 class="mt-0 mb-2"><a href="/mypage.html?user_id=${comment.author.id}">${comment.author.nickname}</a></h6>
+            <strong>${comment.content}</strong>
+            <small class="text-muted">${comment.created_at}</small>
         </div>
         </li>`;
     });
@@ -132,26 +134,4 @@ async function submitComment(quizId) {
         return;
     }
     loadCommentList(quizId);
-    // const commentList = document.getElementById("comment-list");
-    // const comment = await response.json();
-    // if (comment.is_answer) {
-    //     commentList.insertAdjacentHTML(
-    //         "afterbegin",
-    //         `
-    //     <li class="media d-flex mb-3 text-bg-success">
-    //     <div class="media-body">
-    //         <h5 class="mt-0 mb-1">${comment.author.nickname}</h5>
-    //         ${comment.content}
-    //     </div>
-    //     </li>`
-    //     );
-    //     return;
-    // }
-    // commentList.innerHTML += `
-    //     <li class="media d-flex mb-3">
-    //     <div class="media-body">
-    //         <h5 class="mt-0 mb-1">${comment.author.nickname}</h5>
-    //         ${comment.content}
-    //     </div>
-    //     </li>`;
 }

@@ -1,24 +1,22 @@
-// async function addStyleList() {
-//     const stylesForm = document.getElementById("style");
-//     const response = await getStyleList();
-//     if (response.ok) {
-//         const styles = await response.json();
-//         for (const { id, name } of styles) {
-//             let option = document.createElement("option");
-//             option.value = id;
-//             option.innerText = name;
-//             stylesForm.appendChild(option);
-//         }
-//     }
-// }
-
-// addStyleList();
+const form = document.querySelector("#quiz-form");
 const images = [];
 const imageList = document.getElementById("image-list");
 let selectedIdx;
 
+async function wrapGenerateImage() {
+    const spinner = document.querySelector("#spinner");
+    spinner.style.display = "block";
+    await generateImage();
+    spinner.style.display = "none";
+}
+
 async function generateImage() {
     const prompt = document.getElementById("prompt").value;
+    if (!prompt) {
+        alert("제시어를 입력하세요.");
+        return;
+    }
+
     // 서버에 요청을 하면 서버가 포인트를 차감하고 api키와 번역된 프롬프트를 반환
     const preResponse = await prepareKarloAPI(prompt);
     if (!preResponse.ok) {
@@ -27,7 +25,6 @@ async function generateImage() {
         return;
     }
     const data = await preResponse.json();
-    console.log(data.prompt);
     const response = await karloAPI(data.prompt, data.API_KEY);
     if (!response.ok) {
         const error = await response.json();
@@ -64,8 +61,17 @@ function selectImage(idx) {
 }
 
 async function createQuiz() {
+    form.classList.add("was-validated");
+    if (!form.checkValidity()) {
+        return;
+    }
+    refreshAccessToken();
     const answer = document.getElementById("answer").value;
     const hint = document.getElementById("hint").value;
+    if (!selectedIdx) {
+        alert("이미지를 선택해주세요.");
+        return;
+    }
     const image = images[selectedIdx];
 
     data = {
