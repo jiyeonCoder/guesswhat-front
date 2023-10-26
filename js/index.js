@@ -8,10 +8,12 @@ async function loadQuizzes() {
     const quizList = document.getElementById("quiz-list");
 
     quizzes.forEach((quiz) => {
+        console.log(quiz.id);
         const newCol = document.createElement("div");
         newCol.setAttribute("class", "col");
         newCol.classList.add("text-center");
-        newCol.setAttribute("onclick", `articleDetail(${quiz.id})`);
+        newCol.setAttribute("onclick", `quizDetail(${quiz.id})`);
+        quizList.appendChild(newCol);
 
         const newCard = document.createElement("div");
         newCard.setAttribute("class", "card");
@@ -23,7 +25,7 @@ async function loadQuizzes() {
         newCardHeader.setAttribute("class", "card-header");
         newCard.appendChild(newCardHeader);
 
-        const newCardtitle = document.createElement("h5");
+        const newCardtitle = document.createElement("p");
         newCardtitle.setAttribute("class", "card-title");
         newCardtitle.innerText = quiz.author.nickname;
         newCardHeader.appendChild(newCardtitle);
@@ -31,18 +33,7 @@ async function loadQuizzes() {
         const articleImage = document.createElement("img");
         articleImage.setAttribute("class", "card-img-top");
         articleImage.classList.add();
-
-        if (quiz.image) {
-            articleImage.setAttribute(
-                "src",
-                `${backend_base_url}${quiz.image}`
-            );
-        } else {
-            articleImage.setAttribute(
-                "src",
-                "https://search.pstatic.net/common/?src=http%3A%2F%2Fblogfiles.naver.net%2FMjAyMzA1MjdfMTE1%2FMDAxNjg1MTk1MjQ0MjAz.iIaJDy9Yp3NiRG9PHd4uI_za1f1HKO7J5o6Q3wATqzcg.l8Pem3MI699fPi3SGH2l7e_rgr8tjthQbCFGuPX6Ig4g.JPEG.loveyoujuwon7354%2FIMG_3273.jpg&type=a340"
-            );
-        }
+        articleImage.setAttribute("src", `${backend_base_url}${quiz.image}`);
 
         newCard.appendChild(articleImage);
 
@@ -50,8 +41,15 @@ async function loadQuizzes() {
         newCardbody.setAttribute("class", "card-body");
         newCard.appendChild(newCardbody);
         const newCardText = document.createElement("div");
-
-        quizList.appendChild(newCol);
+        const likes_count = document.createElement("p");
+        likes_count.innerText = `좋아요: ${quiz.likes_count}  댓글 수: ${quiz.comments_count}`;
+        newCardText.appendChild(likes_count);
+        newCardbody.append(newCardText);
+        if (quiz.solved === true) {
+            newCardbody.innerHTML += `<span class="badge rounded-pill text-bg-success">완료</span>`;
+        } else {
+            newCardbody.innerHTML += `<span class="badge rounded-pill text-bg-danger">풀이중</span>`;
+        }
     });
 }
 

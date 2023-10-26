@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MyPage</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <style>
+        .card-img-top {
+            width: 100%;
+            height: 20vw;
+            object-fit: cover;
+        }
+        .border-right {
+            border-right: 1px solid #ccc;
+            height: 100vh;
+        }
+        .round-image {
+            width: px;
+            height: px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+    </style>
+</head>
+<body>
+    <header></header>
+    <script src="js/loader.js"></script>
+        <div class="container">
+            <div class="row">
+                <div class="col border-right col-3">
+                    <!-- 왼쪽 세로 영역 -->
+                    <div class="col">
+                        <div class="card">
+                            <div class="card-header">
+                                <div class="d-flex justify-content-center">
+                                    <h5 class="card-title">내 정보</h5>
+                                </div>
+                            </div>
+                            <div class="card-body">
+                                <!-- <div class="row justify-content-center">
+                                    <img id="profile-image" class="w-75 round-image object-fit-scale" src="https://upload.wikimedia.org/wikipedia/commons/b/b5/Windows_10_Default_Profile_Picture.svg">
+                                </div> -->
+                                <div class="row mt-3">
+                                    <p><strong>이메일:</strong> <span id="email"></span></p>
+                                    <p><strong>닉네임:</strong> <span id="nickname"></span></p>
+                                    <p><strong>포인트:</strong> <span id="point"></span></p>
+                                    <!-- <p><strong>팔로잉:</strong> <span id="following"></span></p>
+                                    <p><strong>팔로워:</strong> <span id="followers"></span></p>
+                                    <p><strong>선호 스타일:</strong> <span id="styles"></span></p> -->
+                                </div>
+                                <div id=myranking>
+                                    
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-9">
+                    <!-- 오른쪽 세로 영역 -->
+                    <div class="row mb-2">
+                        <div class="container w-75">
+                            <div id="historyLogs" class="row row-cols-3">
+                                
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    <script src="js/api.js"></script>
+    <script src="js/mypage.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

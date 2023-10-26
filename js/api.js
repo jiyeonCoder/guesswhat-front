@@ -173,10 +173,10 @@ async function postQuiz(formData) {
 // 글 수정하기
 
 // 글 삭제 요청
-async function deleteArticle(articleId) {
+async function deleteQuiz(quizId) {
     const accessToken = localStorage.getItem("access");
 
-    const response = await fetch(`${backend_base_url}/articles/${articleId}/`, {
+    const response = await fetch(`${backend_base_url}/quizzes/${quizId}/`, {
         method: "DELETE",
         headers: {
             Authorization: `Bearer ${accessToken}`,
@@ -221,36 +221,44 @@ async function getUserArticles(userId) {
 }
 
 // 상세페이지로 이동하는 함수
-function articleDetail(articleId) {
-    window.location.href = `${frontend_base_url}/article_detail.html?article_id=${articleId}`;
+function quizDetail(quizId) {
+    window.location.href = `${frontend_base_url}/detail.html?quiz_id=${quizId}`;
 }
 
-// 글 상세페이지 불러오기
-async function getArticle(articleId) {
+// 퀴즈 상세페이지 불러오기
+async function getQuizDetail(quizId) {
     const accessToken = localStorage.getItem("access");
-    let response;
     if (accessToken) {
-        response = await fetch(`${backend_base_url}/articles/${articleId}`, {
+        const response = await fetch(`${backend_base_url}/quizzes/${quizId}`, {
             headers: {
                 Authorization: `Bearer ${accessToken}`,
             },
         });
+        return response;
     } else {
-        response = await fetch(`${backend_base_url}/articles/${articleId}`);
-    }
-
-    if (response.status == 200) {
-        const response_json = await response.json();
-        return response_json;
-    } else {
-        alert("불러오는 것에 실패하였습니다.");
+        const response = await fetch(`${backend_base_url}/quizzes/${quizId}`);
+        return response;
     }
 }
 
-async function postLikesArticle(articleId) {
+async function postLikesQuiz(quizId) {
     const accessToken = localStorage.getItem("access");
     const response = await fetch(
-        `${backend_base_url}/articles/${articleId}/likes/`,
+        `${backend_base_url}/quizzes/${quizId}/likes/`,
+        {
+            method: "POST",
+            headers: {
+                Authorization: `Bearer ${accessToken}`,
+            },
+        }
+    );
+    return response;
+}
+
+async function getHint(quizId) {
+    const accessToken = localStorage.getItem("access");
+    const response = await fetch(
+        `${backend_base_url}/quizzes/${quizId}/hint/`,
         {
             method: "POST",
             headers: {
@@ -262,41 +270,31 @@ async function postLikesArticle(articleId) {
 }
 
 // 댓글 불러오기
-async function getComments(articleId) {
+async function getComments(quizId) {
     const response = await fetch(
-        `${backend_base_url}/articles/${articleId}/comments/`
+        `${backend_base_url}/quizzes/${quizId}/comments/`
     );
 
-    if (response.ok) {
-        const response_json = await response.json();
-        return response_json;
-    }
+    return response;
 }
 
 // 댓글 작성
-async function postComment(articleId, newComment) {
-    let token = localStorage.getItem("access");
+async function postComment(quizId, newComment) {
+    const accessToken = localStorage.getItem("access");
     const response = await fetch(
-        `${backend_base_url}/articles/${articleId}/comments/`,
+        `${backend_base_url}/quizzes/${quizId}/comments/`,
         {
             method: "POST",
             headers: {
                 "content-type": "application/json",
-                Authorization: `Bearer ${token}`,
+                Authorization: `Bearer ${accessToken}`,
             },
             body: JSON.stringify({
                 content: newComment,
             }),
         }
     );
-
-    if (response.ok) {
-        const data = await response.json();
-        return data;
-    } else {
-        const error = await response.json();
-        alert(error.detail);
-    }
+    return response;
 }
 
 async function postLikesComment(articleId, commentId) {
@@ -317,8 +315,19 @@ async function postLikesComment(articleId, commentId) {
 async function getUserInfo(userId) {
     const accessToken = localStorage.getItem("access");
     if (userId) {
+        const response = await fetch(`${backend_base_url}/accounts/${userId}/`);
+        return response;
+    } else {
+        const response = await fetch(`${backend_base_url}/accounts/`);
+        return response;
+    }
+}
+
+async function getRankingList(userId) {
+    const accessToken = localStorage.getItem("access");
+    if (userId) {
         const response = await fetch(
-            `${backend_base_url}/accounts/${userId}/`,
+            `${backend_base_url}/accounts/${userId}/ranking/`,
             {
                 headers: {
                     Authorization: `Bearer ${accessToken}`,
@@ -327,7 +336,7 @@ async function getUserInfo(userId) {
         );
         return response;
     } else {
-        const response = await fetch(`${backend_base_url}/accounts/`, {
+        const response = await fetch(`${backend_base_url}/accounts/ranking/`, {
             headers: {
                 Authorization: `Bearer ${accessToken}`,
             },
